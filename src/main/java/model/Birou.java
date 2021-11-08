@@ -5,7 +5,7 @@ import java.util.List;
 public class Birou {
     private String name;
     private int nrGhisee;
-    private List<Document> documents;
+    private List<Document> documents;  //nu trebuie dosar in loc de list<document>?
 
     public Birou(String name, int nrGhisee, List<Document> documents) {
         this.name = name;

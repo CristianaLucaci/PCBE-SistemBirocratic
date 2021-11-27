@@ -1,16 +1,23 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Birou {
     private String name;
     private int nrGhisee;
-    private List<Document> documents;  //nu trebuie dosar in loc de list<document>?
+    private List<Ghiseu> ghisee;
+    private Dosar dosar;
 
-    public Birou(String name, int nrGhisee, List<Document> documents) {
+    public Birou(String name, int nrGhisee, Dosar dosar) {
         this.name = name;
         this.nrGhisee = nrGhisee;
-        this.documents = documents;
+        this.dosar = dosar;
+        ghisee = new ArrayList();
+        for(int i = 0 ; i < nrGhisee ; i++) {
+        	ghisee.add(new Ghiseu(i,name));
+        }
+        
     }
 
     public String getName() {
@@ -21,10 +28,15 @@ public class Birou {
         return nrGhisee;
     }
 
-    public List<Document> getDocuments() {
-        return documents;
+    public List<Ghiseu> getGhisee(){
+    	return ghisee;
     }
-
+    
+    public Dosar getDosar() {
+        return dosar;
+    }
+    
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -33,7 +45,12 @@ public class Birou {
         this.nrGhisee = nrGhisee;
     }
 
-    public void setDocuments(List<Document> documents) {
-        this.documents = documents;
+    public void setGhisee(List<Ghiseu> ghisee){
+    	this.ghisee = ghisee;
     }
+    
+    public void setDosar(Dosar dosar) {
+        this.dosar = dosar;
+    }
+    
 }

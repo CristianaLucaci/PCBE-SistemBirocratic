@@ -6,7 +6,7 @@ public class Ghiseu {
 	private int nr; // numarul de identificare al ghiseului, nu pot exista doua ghisee cu acelasi nr, apartinand aceluiasi birou 
     private String act;
 	
-	public Ghiseu( int nr, String act) {
+	public Ghiseu(int nr, String act) {
 		this.nr = nr;
 		this.act = act;
 	}

@@ -35,8 +35,7 @@ public class Birou {
     public Dosar getDosar() {
         return dosar;
     }
-    
-    
+
     public void setName(String name) {
         this.name = name;
     }

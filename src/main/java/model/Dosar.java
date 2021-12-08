@@ -1,41 +1,57 @@
 package model;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Dosar {
-    //private int nrDocumente;
-    private List<Document> documente;
+    private List<Document> requiredDocs;
+    private List<Document> existingDocs;
 
-    public Dosar() {
-        //nrDocumente=0;
-        documente=new ArrayList<>();
-    }
-
-    public Dosar(List<Document> documente) {
-        //this.nrDocumente = nrDocumente;
-        this.documente = documente;
+    public Dosar(List<Document> requiredDocs, List<Document> existingDocs) {
+        this.requiredDocs = requiredDocs;
+        this.existingDocs = existingDocs;
     }
 
     public void addDocument(Document d)
     {
-        //nrDocumente++;
-        documente.add(d);
+        requiredDocs.add(d);
     }
 
-    /*public int getNrDocumente() {
-        return nrDocumente;
+    public List<Document> getAllRequiredDocuments() {
+        return requiredDocs;
     }
 
-    public void setNrDocumente(int nrDocumente) {
-        this.nrDocumente = nrDocumente;
-    }*/
+    public List<Document> getAllExistingDocuments() { return existingDocs; }
 
-    public List<Document> getDocumente() {
-        return documente;
+    public void getDocumente() throws InterruptedException {
+        if(!checkIfHasAllDocuments(requiredDocs)) {
+            for(Document doc : requiredDocs) {
+                if(!doc.isLuat()) {
+                    existingDocs.add(doc.getDocument());
+                    System.out.println("Documentul " + doc.getName() + " a fost luat");
+                    Thread.sleep(doc.getDurata());
+                    doc.setLuat(true);
+                }
+            }
+        }
     }
 
-    public void setDocumente(List<Document> documente) {
-        this.documente = documente;
+    public boolean checkIfHasAllDocuments(List<Document> requiredDocs) {
+        if(existingDocs.size() == requiredDocs.size()) {
+            //System.out.println("Toate documentele au fost luate");
+            return true;
+        }
+        return false;
+    }
+
+    public void setDocumentsNotTaken() {
+        for(Document doc : requiredDocs)
+            doc.setLuat(false);
+        existingDocs.removeAll(existingDocs);
+    }
+
+    public void setRequiredDocs(List<Document> requiredDocs) {
+        this.requiredDocs = requiredDocs;
     }
 }

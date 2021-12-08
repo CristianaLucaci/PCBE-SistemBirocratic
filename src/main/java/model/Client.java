@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Client implements Runnable {
 
     private int id;     //numarul(id-ul) clientului
@@ -38,6 +41,26 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
+        List<Document> reqDocs = birou.getDosar().getAllRequiredDocuments();
+        String docs = "";
+        for(Document doc : reqDocs) {
+            docs = doc.getName() + " ";
+        }
 
+        System.out.println("Clientul " + id + " are nevoie de actul: " + birou.getName());
+        System.out.println("Clientul are nevoie de urmatoarele documente: " + docs);
+
+        while(!dosar.checkIfHasAllDocuments(reqDocs)) {
+            try {
+                dosar.getDocumente();
+                if(dosar.checkIfHasAllDocuments(reqDocs)) {
+                    System.out.println("Actul " + birou.getName() + " a fost obtinut\n");
+                }
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        birou.getDosar().setDocumentsNotTaken();
     }
 }

@@ -38,5 +38,9 @@ public class Document {
         this.durata = durata;
     }
 
+    public Document getDocument() {
+        return new Document(this.name, this.durata, this.luat);
+    }
+
 
 }

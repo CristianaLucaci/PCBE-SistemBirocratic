@@ -90,6 +90,7 @@ public class Client implements Runnable {
             }
         }
         g=birou.getGhisee().get(minpos);
+        System.out.println("Clientul "+getId()+":Am mers la ghiseul "+(minpos+1));
         g.serveClient(this);
     }
 }

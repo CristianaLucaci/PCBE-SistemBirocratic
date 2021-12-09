@@ -43,11 +43,21 @@ public class Main {
 //		clients.add(client2);
 
 		for(Client cl : clients)
-			cl.run();
+			//cl.run();
 
 
 		createClient(1,bir1);
 		createClient(2,bir1);
+		createClient(3,bir1);
+		createClient(4,bir1);
+		createClient(5,bir1);
+		createClient(6,bir1);
+		createClient(7,bir1);
+		createClient(8,bir1);
+		createClient(9,bir1);
+		createClient(10,bir1);
+		createClient(11,bir1);
+		createClient(12,bir1);
 	}
 
 	public static void createClient(int id,Birou birou)

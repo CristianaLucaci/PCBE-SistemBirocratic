@@ -46,8 +46,14 @@ public class Main {
 			cl.run();
 
 
-		Thread thread = new Thread(new Client(1, bir1, bir1.getDosar()));
-		System.out.println("Clientul " + thread.getId() + " a fost creat");
+		createClient(1,bir1);
+		createClient(2,bir1);
+	}
+
+	public static void createClient(int id,Birou birou)
+	{
+		Thread thread = new Thread(new Client(id, birou, new Dosar(birou.getDosar().getAllRequiredDocuments(), new ArrayList<>())));
+		System.out.println("Clientul " + id + " a fost creat");
 		thread.start();
 	}
 }

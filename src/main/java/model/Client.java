@@ -8,6 +8,7 @@ public class Client implements Runnable {
     private int id;     //numarul(id-ul) clientului
     private Birou birou;    //biroul de la care trebuie sa ia actul
     private Dosar dosar;    //dosarul clientului, gol la inceput
+    private int orderNr=0;
 
     public Client(int id, Birou birou, Dosar dosar) {
         this.id = id;
@@ -54,7 +55,8 @@ public class Client implements Runnable {
             try {
                 dosar.getDocumente();
                 if(dosar.checkIfHasAllDocuments(reqDocs)) {
-                    System.out.println("Actul " + birou.getName() + " a fost obtinut\n");
+                    goToGhiseu();
+                    //System.out.println("Actul " + birou.getName() + " a fost obtinut\n");
                 }
             }
             catch(Exception e) {
@@ -62,5 +64,32 @@ public class Client implements Runnable {
             }
         }
         birou.getDosar().setDocumentsNotTaken();
+    }
+
+    public int getOrderNr() {
+        return orderNr;
+    }
+
+    public void setOrderNr(int orderNr) {
+        this.orderNr = orderNr;
+    }
+
+    public void goToGhiseu()
+    {
+        int minWaiting=999999;
+        int minpos=0;
+        int i;
+        Ghiseu g;
+        for(i=0;i<birou.getGhisee().size();i++)
+        {
+            g=birou.getGhisee().get(i);
+            if(g.getClientsWaiting()<minWaiting)
+            {
+                minWaiting=g.getClientsWaiting();
+                minpos=i;
+            }
+        }
+        g=birou.getGhisee().get(minpos);
+        g.serveClient(this);
     }
 }

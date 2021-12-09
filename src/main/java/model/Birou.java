@@ -16,6 +16,7 @@ public class Birou {
         ghisee = new ArrayList();
         for(int i = 0 ; i < nrGhisee ; i++) {
         	ghisee.add(new Ghiseu(i,name));
+            ghisee.get(i).setBirou(this);
         }
         
     }

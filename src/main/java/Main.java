@@ -1,5 +1,10 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import model.Birou;
 import model.Client;
@@ -45,9 +50,9 @@ public class Main {
 		//for(Client cl : clients)
 			//cl.run();
 
-		for(int i=0;i<50;i++)
+		for(int i=0;i<100;i++)
 		{
-			createClient(i,bir1);
+			createClient(i, bir1);
 		}
 	}
 
@@ -57,4 +62,5 @@ public class Main {
 		System.out.println("Clientul " + id + " a fost creat");
 		thread.start();
 	}
+
 }

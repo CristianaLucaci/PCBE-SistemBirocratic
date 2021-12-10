@@ -134,23 +134,25 @@ public class Ghiseu {
 
 	public void requestOrderNr(Client client)
 	{
-		if(getClientsWaiting()==0)
+		int clientsWaiting=getClientsWaiting();
+		int orderNr=getOrderNr();
+		if(clientsWaiting==0)
 		{
 			if(!isServingClient())
 			{
-				client.setOrderNr(getOrderNr());
+				client.setOrderNr(orderNr);
 				serveClient(client);
 			}
 			else
 			{
-				client.setOrderNr(getOrderNr()+1);
+				client.setOrderNr(orderNr+1);
 				incClientsWaiting();
 				clientWait(client);
 			}
 		}
 		else
 		{
-			client.setOrderNr(getOrderNr()+getClientsWaiting()+1);
+			client.setOrderNr(orderNr+clientsWaiting+1);
 			incClientsWaiting();
 			clientWait(client);
 		}

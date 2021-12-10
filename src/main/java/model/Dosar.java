@@ -24,12 +24,12 @@ public class Dosar {
 
     public List<Document> getAllExistingDocuments() { return existingDocs; }
 
-    public void getDocumente() throws InterruptedException {
+    public void getDocumente(int idClient) throws InterruptedException {
         if(!checkIfHasAllDocuments(requiredDocs)) {
             for(Document doc : requiredDocs) {
                 if(!doc.isLuat()) {
                     existingDocs.add(doc.getDocument());
-                    System.out.println("Documentul " + doc.getName() + " a fost luat");
+                    System.out.println("Clientul " + idClient+": Documentul " + doc.getName() + " a fost luat");
                     Thread.sleep(doc.getDurata());
                     doc.setLuat(true);
                 }

@@ -45,15 +45,15 @@ public class Client implements Runnable {
         List<Document> reqDocs = birou.getDosar().getAllRequiredDocuments();
         String docs = "";
         for(Document doc : reqDocs) {
-            docs = doc.getName() + " ";
+            docs = docs + doc.getName() + " ";
         }
 
-        System.out.println("Clientul " + id + " are nevoie de actul: " + birou.getName());
-        System.out.println("Clientul are nevoie de urmatoarele documente: " + docs);
+        System.out.println("Clientul " + id + ": are nevoie de actul: " + birou.getName());
+        System.out.println("Clientul "+ id + ": are nevoie de urmatoarele documente: " + docs + "pentru a obtine actul: " + birou.getName());
 
         while(!dosar.checkIfHasAllDocuments(reqDocs)) {
             try {
-                dosar.getDocumente();
+            	dosar.getDocumente(id);
                 if(dosar.checkIfHasAllDocuments(reqDocs)) {
                     goToGhiseu();
                     //System.out.println("Actul " + birou.getName() + " a fost obtinut\n");

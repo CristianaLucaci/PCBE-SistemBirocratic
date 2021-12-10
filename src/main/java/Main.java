@@ -37,29 +37,20 @@ public class Main {
 		Birou bir4 = new Birou ("Asigurare",2,dos2);
 		Birou bir5 = new Birou ("Certificat de nastere",3,dos2);
 
-		ArrayList<Client> clients = new ArrayList<>();
-
-		Client client = new Client(1, bir1, bir1.getDosar());
-		Client client1 = new Client(2, bir4, bir4.getDosar());
-		Client client2 = new Client(3, bir3, bir3.getDosar());
-
-		clients.add(client);
-//		clients.add(client1);
-//		clients.add(client2);
-
-		//for(Client cl : clients)
-			//cl.run();
-
-		for(int i=0;i<100;i++)
+		for(int i=0;i<100;i=i+5)
 		{
 			createClient(i, bir1);
+			createClient(i+1, bir2);
+			createClient(i+2, bir3);
+			createClient(i+3, bir4);
+			createClient(i+4, bir5);
 		}
 	}
 
 	public static void createClient(int id,Birou birou)
 	{
 		Thread thread = new Thread(new Client(id, birou, new Dosar(birou.getDosar().getAllRequiredDocuments(), new ArrayList<>())));
-		System.out.println("Clientul " + id + " a fost creat");
+		System.out.println("Clientul " + id + ": a fost creat");
 		thread.start();
 	}
 

@@ -81,11 +81,20 @@ public class Client implements Runnable {
         int i;
         Ghiseu g;
         int clientsWaiting;
+        int count = 0;
         for(i=0;i<birou.getGhisee().size();i++)
         {
-            g=birou.getGhisee().get(i);
+        	g=birou.getGhisee().get(i);
+        	
+        	if(g.getOnPause() == false) {
+        		count++;
+        		if(count == birou.getGhisee().size()) {
+        			i = 0;
+        		}
+        	}
+            
             clientsWaiting=g.getClientsWaiting();
-            if(clientsWaiting<minWaiting)
+            if(clientsWaiting<minWaiting && g.getOnPause() == false)
             {
                 minWaiting=clientsWaiting;
                 minpos=i;

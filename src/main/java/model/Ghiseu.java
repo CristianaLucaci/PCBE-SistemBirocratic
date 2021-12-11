@@ -1,5 +1,7 @@
 package model;
 
+import java.util.concurrent.TimeUnit;
+
 public class Ghiseu {
 	
 	private Birou birou; // biroul din care face parte ghiseul
@@ -10,6 +12,8 @@ public class Ghiseu {
 	//private Integer clientsWaiting=new Integer(0);
 	private int clientsWaiting;
 	private boolean servingClient=false;
+	private boolean onPause = false;
+	private boolean hadPause = false;
 	
 	public Ghiseu(int nr, String act) {
 		this.nr = nr;
@@ -38,6 +42,14 @@ public class Ghiseu {
 
     public void setAct(String act) {
     	this.act = act;
+    }
+    
+    public void setHadPause(boolean state) {
+    	hadPause = state;
+    }
+    
+    public boolean getHadPause() {
+    	return hadPause;
     }
 
 	public synchronized int getOrderNr() {
@@ -90,11 +102,27 @@ public class Ghiseu {
 	{
 		servingClient=false;
 	}
+	
+	public synchronized boolean getOnPause() {
+		return onPause;
+	}
+	
+	public synchronized void setOnPause() {
+		onPause = true;
+		System.out.println("Birou " + birou.getName() +": Ghiseul " + (nr+1) + " este in pauza!");
+		
+		//clearOnPause();
+	}
+	
+	public synchronized void clearOnPause() {
+		System.out.println("Birou " + birou.getName() +": Ghiseul " + (nr+1) + " a revenit din pauza!");
+		onPause = false;
+	}
 
 	public void clientWait(Client client)
 	{
 		//block
-		System.out.println("Clientul "+client.getId()+": M-am blocat in asteptare cu numarul de ordine "+client.getOrderNr());
+		System.out.println("Clientul "+client.getId()+": M-am blocat la "+ birou.getName() +", la ghiseul "+(nr+1)+" in asteptare cu numarul de ordine "+client.getOrderNr());
 		while(client.getOrderNr()!=getOrderNr()){
 			/*System.out.println("Clientul "+client.getId()+": In asteptare cu numarul de ordine "+client.getOrderNr()+" si ghiseul are nr ordine "+orderNr);
 			try {
@@ -109,6 +137,7 @@ public class Ghiseu {
 	}
 
 	public void serveClient(Client client) {
+
 		if(client.getOrderNr()==0)
 		{
 			requestOrderNr(client);
@@ -120,6 +149,13 @@ public class Ghiseu {
 		else
 		{
 			//do serve
+			if(this.getOnPause() == true) {
+				System.out.println("Clientul "+client.getId()+" asteapta ca ghiseul "+(nr+1)+" sa se deschida");
+				while(this.getOnPause()) {
+					// ghiseul este in pauza
+					//System.out.println("Clientul "+client.getId()+" asteapta ca ghiseul "+nr+" sa se deschida");
+				}
+			}
 			setServingClient();
 			try {
 				Thread.sleep(300);

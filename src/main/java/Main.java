@@ -10,8 +10,10 @@ import model.Birou;
 import model.Client;
 import model.Document;
 import model.Dosar;
+import model.GhiseuSchedule;
 
 public class Main {
+
 	public static void main(String[] args) {
 		
 		Document doc1 = new Document ("Poza",1000,false);
@@ -32,12 +34,17 @@ public class Main {
 		Dosar dos2 = new Dosar(docList1, docListEmpty);
 		
 		Birou bir1 = new Birou ("Buletin",2,dos1);
+		createGhiseuSchedule(bir1);
 		Birou bir2 = new Birou ("Permis de conducere",3,dos1);
+		createGhiseuSchedule(bir2);
 		Birou bir3 = new Birou ("Pasaport",1,dos1);
+		createGhiseuSchedule(bir3);
 		Birou bir4 = new Birou ("Asigurare",2,dos2);
+		createGhiseuSchedule(bir4);
 		Birou bir5 = new Birou ("Certificat de nastere",3,dos2);
-
-		for(int i=0;i<100;i=i+5)
+		createGhiseuSchedule(bir5);
+		
+		for(int i=0;i<50;i=i+5)
 		{
 			createClient(i, bir1);
 			createClient(i+1, bir2);
@@ -45,6 +52,12 @@ public class Main {
 			createClient(i+3, bir4);
 			createClient(i+4, bir5);
 		}
+		
+	}
+	
+	public static void createGhiseuSchedule(Birou birou) {
+		Thread thread = new Thread(new GhiseuSchedule(birou));	
+		thread.start();
 	}
 
 	public static void createClient(int id,Birou birou)

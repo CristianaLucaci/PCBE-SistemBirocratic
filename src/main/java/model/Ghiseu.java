@@ -72,7 +72,7 @@ public class Ghiseu {
 		this.birou = birou;
 	}
 
-	public void clientLeave()
+	public synchronized void clientLeave()
 	{
 		clientsWaiting--;
 		orderNr++;
@@ -109,53 +109,63 @@ public class Ghiseu {
 	
 	public synchronized void setOnPause() {
 		onPause = true;
-		System.out.println("Birou " + birou.getName() +": Ghiseul " + (nr+1) + " este in pauza!");
+		System.out.println("Birou " + birou.getName() +": Ghiseul " + (nr+1) + " este in pauza");
 		
 		//clearOnPause();
 	}
 	
 	public synchronized void clearOnPause() {
-		System.out.println("Birou " + birou.getName() +": Ghiseul " + (nr+1) + " a revenit din pauza!");
+		System.out.println("Birou " + birou.getName() +": Ghiseul " + (nr+1) + " a revenit din pauza");
 		onPause = false;
+	}
+	
+	public void goToOtherGhiseu(Client client) {
+		System.out.println("Clientul "+client.getId()+": Ghiseul "+(nr+1)+" este in pauza merg la alt ghiseu!");
+		client.setOrderNr(0);
+		clientLeave();
+		client.goToGhiseu();
 	}
 
 	public void clientWait(Client client)
 	{
-		//block
-		System.out.println("Clientul "+client.getId()+": M-am blocat la "+ birou.getName() +", la ghiseul "+(nr+1)+" in asteptare cu numarul de ordine "+client.getOrderNr());
-		while(client.getOrderNr()!=getOrderNr()){
-			/*System.out.println("Clientul "+client.getId()+": In asteptare cu numarul de ordine "+client.getOrderNr()+" si ghiseul are nr ordine "+orderNr);
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
-		}
-		System.out.println("Clientul "+client.getId()+": M-am deblocat!");
-		decClientsWaiting();
-		serveClient(client);
+			//block
+			
+			System.out.println("Clientul "+client.getId()+": M-am blocat la "+ birou.getName() +", la ghiseul "+(nr+1)+" in asteptare cu numarul de ordine "+client.getOrderNr());
+			
+			while(client.getOrderNr()!=getOrderNr() && !this.getOnPause()){
+				/*System.out.println("Clientul "+client.getId()+": In asteptare cu numarul de ordine "+client.getOrderNr()+" si ghiseul are nr ordine "+orderNr);
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}*/
+			}
+			if(!this.getOnPause()) {
+				System.out.println("Clientul "+client.getId()+": M-am deblocat!");
+				decClientsWaiting();
+				serveClient(client);
+			}else {
+				goToOtherGhiseu(client);
+			}
+		
+		
 	}
 
 	public void serveClient(Client client) {
-
 		if(client.getOrderNr()==0)
 		{
 			requestOrderNr(client);
 		}
-		else if(client.getOrderNr()!=getOrderNr())
-		{
-			clientWait(client);
-		}
-		else
+		else if(client.getOrderNr()==getOrderNr())		
 		{
 			//do serve
-			if(this.getOnPause() == true) {
+			/*if(this.getOnPause() == true) {
 				System.out.println("Clientul "+client.getId()+" asteapta ca ghiseul "+(nr+1)+" sa se deschida");
 				while(this.getOnPause()) {
 					// ghiseul este in pauza
 					//System.out.println("Clientul "+client.getId()+" asteapta ca ghiseul "+nr+" sa se deschida");
 				}
-			}
+			}*/
 			setServingClient();
 			try {
 				Thread.sleep(300);
@@ -166,29 +176,32 @@ public class Ghiseu {
 			clearServingClient();
 			incOrderNr();
 		}
+		else {
+			clientWait(client);
+		}
 	}
 
 	public void requestOrderNr(Client client)
 	{
-		int clientsWaiting=getClientsWaiting();
-		int orderNr=getOrderNr();
-		if(clientsWaiting==0)
+		//int clientsWaiting=getClientsWaiting();
+		//int orderNr=getOrderNr();
+		if(getClientsWaiting()==0)
 		{
 			if(!isServingClient())
 			{
-				client.setOrderNr(orderNr);
+				client.setOrderNr(getOrderNr());
 				serveClient(client);
 			}
 			else
 			{
-				client.setOrderNr(orderNr+1);
+				client.setOrderNr(getOrderNr()+1);
 				incClientsWaiting();
 				clientWait(client);
 			}
 		}
 		else
 		{
-			client.setOrderNr(orderNr+clientsWaiting+1);
+			client.setOrderNr(getOrderNr()+getClientsWaiting()+1);
 			incClientsWaiting();
 			clientWait(client);
 		}

@@ -78,27 +78,29 @@ public class Client implements Runnable {
     {
         int minWaiting=999999;
         int minpos=0;
-        int i;
+        int i = 0;
         Ghiseu g;
         int clientsWaiting;
         int count = 0;
-        for(i=0;i<birou.getGhisee().size();i++)
+        while(i<birou.getGhisee().size())
         {
         	g=birou.getGhisee().get(i);
         	
-        	if(g.getOnPause() == false) {
+        	if(g.getOnPause() == true) {
         		count++;
         		if(count == birou.getGhisee().size()) {
-        			i = 0;
+        			i = -1;
+        			count = 0;
         		}
+        	}else {
+        		clientsWaiting=g.getClientsWaiting();
+                if(clientsWaiting<minWaiting)
+                {
+                    minWaiting=clientsWaiting;
+                    minpos=i;
+                }
         	}
-            
-            clientsWaiting=g.getClientsWaiting();
-            if(clientsWaiting<minWaiting && g.getOnPause() == false)
-            {
-                minWaiting=clientsWaiting;
-                minpos=i;
-            }
+        	i++;
         }
         g=birou.getGhisee().get(minpos);
         System.out.println("Clientul "+getId()+":Am mers la ghiseul "+(minpos+1));

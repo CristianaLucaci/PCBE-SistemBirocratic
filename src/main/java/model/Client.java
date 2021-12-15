@@ -20,26 +20,6 @@ public class Client implements Runnable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Birou getBirou() {
-        return birou;
-    }
-
-    public void setBirou(Birou birou) {
-        this.birou = birou;
-    }
-
-    public Dosar getDosar() {
-        return dosar;
-    }
-
-    public void setDosar(Dosar dosar) {
-        this.dosar = dosar;
-    }
-
     @Override
     public void run() {
         List<Document> reqDocs = birou.getDosar().getAllRequiredDocuments();

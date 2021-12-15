@@ -36,21 +36,5 @@ public class Birou {
     public Dosar getDosar() {
         return dosar;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setNrGhisee(int nrGhisee) {
-        this.nrGhisee = nrGhisee;
-    }
-
-    public void setGhisee(List<Ghiseu> ghisee){
-    	this.ghisee = ghisee;
-    }
-    
-    public void setDosar(Dosar dosar) {
-        this.dosar = dosar;
-    }
     
 }

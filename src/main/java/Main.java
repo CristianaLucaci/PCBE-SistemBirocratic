@@ -44,7 +44,7 @@ public class Main {
 		Birou bir5 = new Birou ("Certificat de nastere",3,dos2);
 		createGhiseuSchedule(bir5);
 		
-		for(int i=0;i<50;i=i+5)
+		for(int i=0;i<10;i=i+5)
 		{
 			createClient(i, bir1);
 			createClient(i+1, bir2);
